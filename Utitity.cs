@@ -20,5 +20,20 @@ namespace Kimbokchi
         {
             T temp = list[indexA]; list[indexA] = list[indexB]; list[indexB] = temp;
         }
+
+        public static int LuckyNumber(params float[] probablities)
+        {
+            float sum = 0f;
+
+            float lucky = (float)new Random().NextDouble();
+
+            for (int i = 0; i < probablities.Length; ++i)
+            {
+                sum += probablities[i];
+
+                if (lucky <= sum) return i;
+            }
+            return -1;
+        }
     }
 }
