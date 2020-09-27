@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Kimbokchi
 {
-    public static class Utitity
+    public static class Utility
     {
         public static void Swap<T>(ref T a, ref T b)
         {

@@ -16,7 +16,7 @@ namespace Kimbokchi
 
             for (int i = 0; i < 10; ++i)
             {
-                Console.WriteLine($"{Utitity.LuckyNumber(probabilities)}");
+                Console.WriteLine($"{Utility.LuckyNumber(probabilities)}");
             }
             Console.ReadLine();
         }
