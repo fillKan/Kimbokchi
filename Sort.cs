@@ -10,7 +10,6 @@ namespace Kimbokchi
         {
             MergeSort(array, 0, array.Length - 1, new T[array.Length], IsRValueBigger);
         }
-
         public static void MergeSort<T>(this T[] array, int min, int max, T[] tempArray, Func<T, T, bool> IsRValueBigger)
         {
             if (min >= max) return;
@@ -44,12 +43,10 @@ namespace Kimbokchi
             }
             for (i = min; i <= max; i++) array[i] = tempArray[i];
         }
-
         public static void MergeSort<T>(this List<T> list, Func<T, T, bool> IsRValueBigger)
         {
             MergeSort(list, 0, list.Count - 1, new List<T>(list), IsRValueBigger);
         }
-
         public static void MergeSort<T>(this List<T> list, int min, int max, List<T> tempList, Func<T, T, bool> IsRValueBigger)
         {
             if (min >= max) return;
@@ -83,5 +80,51 @@ namespace Kimbokchi
             }
             for (i = min; i <= max; i++) list[i] = tempList[i];
         }
+
+        public static void SelectionSort<T>(this T[] array, Func<T, T, bool> IsRValueBigger)
+        {
+            T temp;
+
+            int i, j, minIndex, length = array.Length;
+
+            for (i = 0; i < length - 1; ++i)
+            {
+                minIndex = i;
+
+                for (j = i + 1; j < length; ++j)
+                {
+                    if (IsRValueBigger(array[j], array[minIndex]))
+                    {
+                        minIndex = j;
+                    }
+                }
+                temp = array[minIndex];
+                array[minIndex] = array[i];
+                array[i] = temp;
+            }
+        }
+        public static void SelectionSort<T>(this List<T> list, Func<T, T, bool> IsRValueBigger)
+        {
+            T temp;
+
+            int i, j, minIndex, length = list.Count;
+
+            for (i = 0; i < length - 1; ++i)
+            {
+                minIndex = i;
+
+                for (j = i + 1; j < length; ++j)
+                {
+                    if (IsRValueBigger(list[j], list[minIndex]))
+                    {
+                        minIndex = j;
+                    }
+                }
+                temp = list[minIndex];
+                list[minIndex] = list[i];
+                list[i] = temp;
+            }
+        }
+
     }
 }
