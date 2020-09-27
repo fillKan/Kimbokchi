@@ -10,21 +10,23 @@ namespace Kimbokchi
             var random = new Random();
 
             var list = new List<int>();
+            var array = new int[10];
 
-
-            Console.WriteLine("Before Insertion Sort : ");
             for (int i = 0; i < 10; i++)
             {
+                array[i] = random.Next();
+
                 list.Add(random.Next());
-                Console.WriteLine($"{list[i]}");
+
+                Console.WriteLine($"{array[i]}");
             }
 
-            Console.WriteLine("After Insertion Sort : ");
-            list.InsertionSort((a, b) => b > a);
+            Console.WriteLine("");
+            array.SelectionSort((a, b) => b > a);
 
-            for (int i = 0; i < list.Count; i++)
+            for (int i = 0; i < 10; i++)
             {
-                Console.WriteLine($"{list[i]}");
+                Console.WriteLine($"{array[i]}");
             }
             Console.ReadLine();
         }

@@ -83,8 +83,6 @@ namespace Kimbokchi
 
         public static void SelectionSort<T>(this T[] array, Func<T, T, bool> IsRValueBigger)
         {
-            T temp;
-
             int i, j, minIndex, length = array.Length;
 
             for (i = 0; i < length - 1; ++i)
@@ -98,15 +96,11 @@ namespace Kimbokchi
                         minIndex = j;
                     }
                 }
-                temp = array[minIndex];
-                array[minIndex] = array[i];
-                array[i] = temp;
+                array.Swap(minIndex, i);
             }
         }
         public static void SelectionSort<T>(this List<T> list, Func<T, T, bool> IsRValueBigger)
         {
-            T temp;
-
             int i, j, minIndex, length = list.Count;
 
             for (i = 0; i < length - 1; ++i)
@@ -120,9 +114,7 @@ namespace Kimbokchi
                         minIndex = j;
                     }
                 }
-                temp = list[minIndex];
-                list[minIndex] = list[i];
-                list[i] = temp;
+                list.Swap(minIndex, i);
             }
         }
 
