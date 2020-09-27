@@ -126,5 +126,39 @@ namespace Kimbokchi
             }
         }
 
+        public static void InsertionSort<T>(this T[] array, Func<T, T, bool> IsRValueBigger)
+        {
+            T remember;
+
+            int i, j;
+
+            for (i = 1; i < array.Length; i++)
+            {
+                remember = array[j = i];
+
+                while (--j >= 0 && IsRValueBigger(remember, array[j]))
+                {
+                    array[j + 1] = array[j];
+                    array[j] = remember;
+                }
+            }
+        }
+        public static void InsertionSort<T>(this List<T> list, Func<T, T, bool> IsRValueBigger)
+        {
+            T remember;
+
+            int i, j;
+
+            for (i = 1; i < list.Count; i++)
+            {
+                remember = list[j = i];
+
+                while (--j >= 0 && IsRValueBigger(remember, list[j]))
+                {
+                    list[j + 1] = list[j];
+                    list[j] = remember;
+                }
+            }
+        }
     }
 }

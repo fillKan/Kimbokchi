@@ -12,15 +12,15 @@ namespace Kimbokchi
             var list = new List<int>();
 
 
-            Console.WriteLine("Before Selection Sort : ");
+            Console.WriteLine("Before Insertion Sort : ");
             for (int i = 0; i < 10; i++)
             {
                 list.Add(random.Next());
                 Console.WriteLine($"{list[i]}");
             }
 
-            Console.WriteLine("After Selection Sort : ");
-            list.SelectionSort((a, b) => b > a);
+            Console.WriteLine("After Insertion Sort : ");
+            list.InsertionSort((a, b) => b > a);
 
             for (int i = 0; i < list.Count; i++)
             {
