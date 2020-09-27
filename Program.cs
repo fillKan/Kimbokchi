@@ -7,26 +7,16 @@ namespace Kimbokchi
     {
         static void Main(string[] args)
         {
-            var random = new Random();
+            // 60% : 0, 
+            // 30% : 1, 
+            //  5% : 2, 
+            //  3% : 3, 
+            //  2% : 4
+            float[] probabilities = new float[5] { 0.6f, 0.3f, 0.05f, 0.03f, 0.02f };
 
-            var list = new List<int>();
-            var array = new int[10];
-
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 10; ++i)
             {
-                array[i] = random.Next();
-
-                list.Add(random.Next());
-
-                Console.WriteLine($"{array[i]}");
-            }
-
-            Console.WriteLine("");
-            array.SelectionSort((a, b) => b > a);
-
-            for (int i = 0; i < 10; i++)
-            {
-                Console.WriteLine($"{array[i]}");
+                Console.WriteLine($"{Utitity.LuckyNumber(probabilities)}");
             }
             Console.ReadLine();
         }
