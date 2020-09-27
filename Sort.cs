@@ -47,7 +47,7 @@ namespace Kimbokchi
 
         public static void MergeSort<T>(this List<T> list, Func<T, T, bool> IsRValueBigger)
         {
-            MergeSort(list, 0, list.Count - 1, new List<T>(), IsRValueBigger);
+            MergeSort(list, 0, list.Count - 1, new List<T>(list), IsRValueBigger);
         }
 
         public static void MergeSort<T>(this List<T> list, int min, int max, List<T> tempList, Func<T, T, bool> IsRValueBigger)

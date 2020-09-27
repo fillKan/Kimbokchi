@@ -9,22 +9,22 @@ namespace Kimbokchi
         {
             var random = new Random();
 
-            int[] array = new int[15];
+            var list = new List<int>();
 
 
             Console.WriteLine("Before MergeSort : ");
-            for (int i = 0; i < array.Length; i++)
+            for (int i = 0; i < 10; i++)
             {
-                array[i] = random.Next();
-                Console.WriteLine($"{array[i]}");
+                list.Add(random.Next());
+                Console.WriteLine($"{list[i]}");
             }
 
             Console.WriteLine("After MergeSort : ");
-            Sort.MergeSort(array, (a, b) => b > a);
+            list.MergeSort((a, b) => b > a);
 
-            for (int i = 0; i < array.Length; i++)
+            for (int i = 0; i < list.Count; i++)
             {
-                Console.WriteLine($"{array[i]}");
+                Console.WriteLine($"{list[i]}");
             }
             Console.ReadLine();
         }
