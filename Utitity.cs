@@ -6,7 +6,7 @@ namespace Kimbokchi
 {
     public static class Utitity
     {
-        public static void Swap<T>(T a, T b)
+        public static void Swap<T>(ref T a, ref T b)
         {
             T temp = a; a = b; b = temp;
         }
