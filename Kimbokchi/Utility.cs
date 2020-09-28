@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Kimbokchi
@@ -34,6 +35,46 @@ namespace Kimbokchi
                 if (lucky <= sum) return i;
             }
             return -1;
+        }
+
+        public static int[] LuckyNumbers(int count, in float[] probablities)
+        {
+            var ramdom = new Random();
+
+            int[] lucky = new int[count];
+
+            var _probablities = probablities.ToList();
+
+            for (int i = 0; i < count; ++i)
+            {
+                float sum = 0f;
+
+                float probablity = (float)ramdom.NextDouble();
+
+                for (int j = 0; j < _probablities.Count; ++j)
+                {
+                    if (probablity <= (sum += _probablities[j]))
+                    {
+                        float average = 
+                            _probablities[lucky[i] = j] / (_probablities.Count - i - 1);
+
+                        _probablities[j] = 0f;
+
+                        for (int k = 0; k < _probablities.Count; k++)
+                        {
+                            if (_probablities[k] > 0f) {
+                                _probablities[k] += average;
+                            }
+                        }
+                        break;
+                    }
+                }
+                if (!_probablities.Any(o => o > 0))
+                {
+                    _probablities = probablities.ToList();
+                }
+            }
+            return lucky;
         }
     }
 }

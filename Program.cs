@@ -20,9 +20,11 @@ namespace Kimbokchi
             int count3 = 0;
             int count4 = 0;
 
-            for (int i = 0; i < 100; ++i)
+            int[] luckyNumbers = Utility.LuckyNumbers(5, probabilities);
+
+            for (int i = 0; i < 5; ++i)
             {
-                switch (Utility.LuckyNumber(probabilities))
+                switch (luckyNumbers[i])
                 {
                     case 0: count0++;
                         break;
