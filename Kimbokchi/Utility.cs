@@ -55,8 +55,10 @@ namespace Kimbokchi
                 {
                     if (probablity <= (sum += _probablities[j]))
                     {
-                        float average = 
-                            _probablities[lucky[i] = j] / (_probablities.Count - i - 1);
+                        int _count = _probablities.Count(o => o > 0f) - 1;
+
+                        float average =
+                             _probablities[lucky[i] = j] / _count;
 
                         _probablities[j] = 0f;
 
@@ -69,7 +71,7 @@ namespace Kimbokchi
                         break;
                     }
                 }
-                if (!_probablities.Any(o => o > 0))
+                if (_probablities.All(o => o == 0))
                 {
                     _probablities = probablities.ToList();
                 }
