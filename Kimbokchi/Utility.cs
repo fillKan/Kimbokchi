@@ -79,4 +79,58 @@ namespace Kimbokchi
             return lucky;
         }
     }
+
+    public class LuckyBox<T>
+    {
+        private Dictionary<float, List<T>> mItemTableOrigin;
+        private Dictionary<float, List<T>> mItemTable;
+
+        private bool mCanAutoReset;
+
+        public LuckyBox(bool isAutoReset = true)
+        {
+            mCanAutoReset = isAutoReset;
+
+            mItemTableOrigin = new Dictionary<float, List<T>>();
+            mItemTable = new Dictionary<float, List<T>>();
+        }
+
+        public void Reset()
+        {
+            foreach (var item in mItemTableOrigin)
+            {
+                mItemTable[item.Key] = item.Value.ToList();
+            }
+        }
+
+        public T RandomItem()
+        {
+            T value = default;
+
+            var random = new Random();
+
+            float sum = 0f;
+            float probablity = (float)random.NextDouble();
+
+            foreach (var item in mItemTable)
+            {
+                if (item.Value.Count == 0) continue;
+
+                sum += item.Key;
+
+                if (probablity <= sum)
+                {
+                    int index = random.Next(0, item.Value.Count);
+
+                    value = item.Value         [index];
+                            item.Value.RemoveAt(index);
+                }
+            }
+            if (mCanAutoReset && value.Equals(default))
+            {
+                Reset();
+            }
+            return value;
+        }
+    }
 }
