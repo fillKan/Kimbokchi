@@ -87,27 +87,48 @@ namespace Kimbokchi
 
         private bool mCanAutoReset;
 
+        private float mAverage;
+
+        private  int mItemCount;
+
         public LuckyBox(bool isAutoReset = true)
         {
+            mItemCount = 0;
+            mAverage = 0f;
+
             mCanAutoReset = isAutoReset;
 
             mItemTableOrigin = new Dictionary<float, List<T>>();
             mItemTable = new Dictionary<float, List<T>>();
         }
-
+        public void AddItem(float probablity, params T[] itemList)
+        {
+            if (!mItemTableOrigin.ContainsKey(probablity))
+            {
+                mItemTableOrigin.Add(probablity, new List<T>());
+                mItemTable      .Add(probablity, new List<T>());
+            }
+            for (int i = 0; i < itemList.Length; ++i)
+            {
+                mItemTableOrigin[probablity].Add(itemList[i]);
+                mItemTable      [probablity].Add(itemList[i]);
+            }
+        }
         public void Reset()
         {
             foreach (var item in mItemTableOrigin)
             {
-                mItemTable[item.Key] = item.Value.ToList();
+                mItemCount += item.Value.Count;
+                
+                item.Value.ForEach(o => mItemTable[item.Key].Add(o));
             }
         }
 
         public T RandomItem()
         {
-            T value = default;
+            if (mCanAutoReset && mItemCount <= 0) Reset();
 
-            var random = new Random();
+            T value = default;  var random = new Random();
 
             float sum = 0f;
             float probablity = (float)random.NextDouble();
@@ -116,7 +137,7 @@ namespace Kimbokchi
             {
                 if (item.Value.Count == 0) continue;
 
-                sum += item.Key;
+                sum += item.Key + mAverage;
 
                 if (probablity <= sum)
                 {
@@ -124,11 +145,14 @@ namespace Kimbokchi
 
                     value = item.Value         [index];
                             item.Value.RemoveAt(index);
+
+                    mItemCount--;
+
+                    if (item.Value.Count == 0)
+                    {
+                        mAverage += item.Key / mItemTable.Count(o => o.Value.Count > 0);
+                    }
                 }
-            }
-            if (mCanAutoReset && value.Equals(default))
-            {
-                Reset();
             }
             return value;
         }
