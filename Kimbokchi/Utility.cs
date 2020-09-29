@@ -99,10 +99,12 @@ namespace Kimbokchi
             mCanAutoReset = isAutoReset;
 
             mItemTableOrigin = new Dictionary<float, List<T>>();
-            mItemTable = new Dictionary<float, List<T>>();
+            mItemTable       = new Dictionary<float, List<T>>();
         }
         public void AddItem(float probablity, params T[] itemList)
         {
+            mItemCount += itemList.Length;
+
             if (!mItemTableOrigin.ContainsKey(probablity))
             {
                 mItemTableOrigin.Add(probablity, new List<T>());
@@ -116,6 +118,8 @@ namespace Kimbokchi
         }
         public void Reset()
         {
+            mAverage = 0f;
+
             foreach (var item in mItemTableOrigin)
             {
                 mItemCount += item.Value.Count;
@@ -150,8 +154,9 @@ namespace Kimbokchi
 
                     if (item.Value.Count == 0)
                     {
-                        mAverage += item.Key / mItemTable.Count(o => o.Value.Count > 0);
+                        mAverage += (item.Key + mAverage) / mItemTable.Count(o => o.Value.Count > 0);
                     }
+                    break;
                 }
             }
             return value;
