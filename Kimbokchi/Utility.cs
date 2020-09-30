@@ -89,16 +89,13 @@ namespace Kimbokchi
 
         private float mComplement;
 
-        private bool mCanAutoReset;
-
         private Random mRandom;
 
-        public LuckyBox(bool autoRefill = true, Action<LuckyBox<T>> emptyItemListAction = null)
+        public LuckyBox(Action<LuckyBox<T>> emptyItemListAction = null)
         {
             mComplement = 0f;
 
-            mCanAutoReset  = autoRefill;
-            mEmptyItemList = emptyItemListAction;
+            mEmptyItemList = emptyItemListAction ?? new Action<LuckyBox<T>>(o => o.Refill());
 
             mItemTableOrigin = new Dictionary<float, List<T>>();
             mItemTable       = new Dictionary<float, List<T>>();
@@ -137,12 +134,7 @@ namespace Kimbokchi
 
             if (mItemTable.All(o => o.Value.Count == 0))
             {
-                if (mCanAutoReset) Refill();
-
-                else
-                {
-                    mEmptyItemList?.Invoke(this);
-                }
+                mEmptyItemList?.Invoke(this);
             }
             foreach (var item in mItemTable)
             {
