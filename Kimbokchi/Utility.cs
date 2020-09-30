@@ -85,19 +85,17 @@ namespace Kimbokchi
         private Dictionary<float, List<T>> mItemTableOrigin;
         private Dictionary<float, List<T>> mItemTable;
 
-        private int mItemCount;
         private float mComplement;
 
         private bool mCanAutoReset;
 
         private Random mRandom;
 
-        public LuckyBox(bool autoReset = true)
+        public LuckyBox(bool autoRefill = true)
         {
-            mItemCount = 0;
             mComplement = 0f;
 
-            mCanAutoReset = autoReset;
+            mCanAutoReset = autoRefill;
 
             mItemTableOrigin = new Dictionary<float, List<T>>();
             mItemTable       = new Dictionary<float, List<T>>();
@@ -106,8 +104,6 @@ namespace Kimbokchi
         }
         public void AddItem(float probablity, params T[] itemList)
         {
-            mItemCount += itemList.Length;
-
             if (!mItemTableOrigin.ContainsKey(probablity))
             {
                 mItemTableOrigin.Add(probablity, new List<T>());
@@ -121,13 +117,10 @@ namespace Kimbokchi
         }
         public void Refill()
         {
-            mItemCount = 0;
             mComplement = 0f;
 
             foreach (var item in mItemTableOrigin)
-            {
-                mItemCount += item.Value.Count;
-                
+            {                
                 if (item.Value.Count > mItemTable[item.Key].Count)
                 {
                     item.Value.ForEach(o => mItemTable[item.Key].Add(o));
@@ -136,13 +129,13 @@ namespace Kimbokchi
         }
         public T RandomItem()
         {
-            if (mCanAutoReset && mItemCount <= 0) Refill();
-
-            T value = default;
-
             float sum = 0f;
             float probablity = (float)mRandom.NextDouble();
 
+            if (mCanAutoReset)
+            {
+                if (mItemTable.All(o => o.Value.Count == 0)) Refill();
+            }
             foreach (var item in mItemTable)
             {
                 if (item.Value.Count == 0) continue;
@@ -153,19 +146,17 @@ namespace Kimbokchi
                 {
                     int index = mRandom.Next(0, item.Value.Count);
 
-                    value = item.Value         [index];
-                            item.Value.RemoveAt(index);
-
-                    mItemCount--;
+                    T value = item.Value         [index];
+                              item.Value.RemoveAt(index);
 
                     if (item.Value.Count == 0)
                     {
                         mComplement += (item.Key + mComplement) / mItemTable.Count(o => o.Value.Count > 0);
                     }
-                    break;
+                    return value;
                 }
             }
-            return value;
+            return default;
         }
     }
 }
