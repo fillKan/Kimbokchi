@@ -85,18 +85,17 @@ namespace Kimbokchi
         private Dictionary<float, List<T>> mItemTableOrigin;
         private Dictionary<float, List<T>> mItemTable;
 
+        private int mItemCount;
+        private float mComplement;
+
         private bool mCanAutoReset;
 
-        private float mAverage;
-
-        private  int mItemCount;
-
-        public LuckyBox(bool isAutoReset = true)
+        public LuckyBox(bool autoReset = true)
         {
             mItemCount = 0;
-            mAverage = 0f;
+            mComplement = 0f;
 
-            mCanAutoReset = isAutoReset;
+            mCanAutoReset = autoReset;
 
             mItemTableOrigin = new Dictionary<float, List<T>>();
             mItemTable       = new Dictionary<float, List<T>>();
@@ -116,9 +115,10 @@ namespace Kimbokchi
                 mItemTable      [probablity].Add(itemList[i]);
             }
         }
-        public void Reset()
+        public void Refill()
         {
-            mAverage = 0f;
+            mItemCount = 0;
+            mComplement = 0f;
 
             foreach (var item in mItemTableOrigin)
             {
@@ -127,10 +127,9 @@ namespace Kimbokchi
                 item.Value.ForEach(o => mItemTable[item.Key].Add(o));
             }
         }
-
         public T RandomItem()
         {
-            if (mCanAutoReset && mItemCount <= 0) Reset();
+            if (mCanAutoReset && mItemCount <= 0) Refill();
 
             T value = default;  var random = new Random();
 
@@ -141,7 +140,7 @@ namespace Kimbokchi
             {
                 if (item.Value.Count == 0) continue;
 
-                sum += item.Key + mAverage;
+                sum += item.Key + mComplement;
 
                 if (probablity <= sum)
                 {
@@ -154,7 +153,7 @@ namespace Kimbokchi
 
                     if (item.Value.Count == 0)
                     {
-                        mAverage += (item.Key + mAverage) / mItemTable.Count(o => o.Value.Count > 0);
+                        mComplement += (item.Key + mComplement) / mItemTable.Count(o => o.Value.Count > 0);
                     }
                     break;
                 }
