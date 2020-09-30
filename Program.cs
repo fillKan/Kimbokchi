@@ -19,7 +19,7 @@ namespace Kimbokchi
             //  2% : 4
             float[] probabilities = new float[5] { 0.6f, 0.3f, 0.05f, 0.03f, 0.02f };
 
-            var luckyBox = new LuckyBox<Items>();
+            var luckyBox = new LuckyBox<Items>(false, o => { Console.WriteLine(""); o.Refill(); });
 
             luckyBox.AddItem(0.6f, Items.Iron, Items.Iron, Items.Iron, Items.Iron, Items.Iron);
             luckyBox.AddItem(0.3f, Items.Bronze, Items.Bronze, Items.Bronze, Items.Bronze);
@@ -35,7 +35,7 @@ namespace Kimbokchi
 
             int[] luckyNumbers = Utility.LuckyNumbers(100, probabilities);
 
-            for (int i = 0; i < 15; i++)
+            for (int i = 0; i < 30; i++)
             {
                 Console.WriteLine(luckyBox.RandomItem().ToString());
             }
