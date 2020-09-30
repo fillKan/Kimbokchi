@@ -90,6 +90,8 @@ namespace Kimbokchi
 
         private bool mCanAutoReset;
 
+        private Random mRandom;
+
         public LuckyBox(bool autoReset = true)
         {
             mItemCount = 0;
@@ -99,6 +101,8 @@ namespace Kimbokchi
 
             mItemTableOrigin = new Dictionary<float, List<T>>();
             mItemTable       = new Dictionary<float, List<T>>();
+
+            mRandom = new Random();
         }
         public void AddItem(float probablity, params T[] itemList)
         {
@@ -124,17 +128,20 @@ namespace Kimbokchi
             {
                 mItemCount += item.Value.Count;
                 
-                item.Value.ForEach(o => mItemTable[item.Key].Add(o));
+                if (item.Value.Count > mItemTable[item.Key].Count)
+                {
+                    item.Value.ForEach(o => mItemTable[item.Key].Add(o));
+                }
             }
         }
         public T RandomItem()
         {
             if (mCanAutoReset && mItemCount <= 0) Refill();
 
-            T value = default;  var random = new Random();
+            T value = default;
 
             float sum = 0f;
-            float probablity = (float)random.NextDouble();
+            float probablity = (float)mRandom.NextDouble();
 
             foreach (var item in mItemTable)
             {
@@ -144,7 +151,7 @@ namespace Kimbokchi
 
                 if (probablity <= sum)
                 {
-                    int index = random.Next(0, item.Value.Count);
+                    int index = mRandom.Next(0, item.Value.Count);
 
                     value = item.Value         [index];
                             item.Value.RemoveAt(index);
