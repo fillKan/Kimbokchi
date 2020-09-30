@@ -82,6 +82,8 @@ namespace Kimbokchi
 
     public class LuckyBox<T>
     {
+        private Action mEmptyItemList;
+
         private Dictionary<float, List<T>> mItemTableOrigin;
         private Dictionary<float, List<T>> mItemTable;
 
@@ -91,11 +93,12 @@ namespace Kimbokchi
 
         private Random mRandom;
 
-        public LuckyBox(bool autoRefill = true)
+        public LuckyBox(bool autoRefill = true, Action emptyItemListAction = null)
         {
             mComplement = 0f;
 
-            mCanAutoReset = autoRefill;
+            mCanAutoReset  = autoRefill;
+            mEmptyItemList = emptyItemListAction;
 
             mItemTableOrigin = new Dictionary<float, List<T>>();
             mItemTable       = new Dictionary<float, List<T>>();
@@ -132,9 +135,14 @@ namespace Kimbokchi
             float sum = 0f;
             float probablity = (float)mRandom.NextDouble();
 
-            if (mCanAutoReset)
+            if (mItemTable.All(o => o.Value.Count == 0))
             {
-                if (mItemTable.All(o => o.Value.Count == 0)) Refill();
+                if (mCanAutoReset) Refill();
+
+                else
+                {
+                    mEmptyItemList?.Invoke();
+                }
             }
             foreach (var item in mItemTable)
             {
